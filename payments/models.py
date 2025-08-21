@@ -22,15 +22,24 @@ class Order(models.Model):
         null=True,
         blank=True,
         related_name="orders",
+        verbose_name=_("Promocode"),
     )
-    total_amount = models.BigIntegerField(null=False, blank=False)
-    status = models.CharField(choices=OrderStatus.choices, null=False, blank=False)
-    notes = models.CharField(max_length=255, null=True, blank=True)
-    ordered_at = models.DateTimeField(auto_now_add=True)
-    purchased_at = models.DateTimeField(null=True, blank=True)
+    total_amount = models.BigIntegerField(
+        null=False, blank=False, verbose_name=_("Total Amount")
+    )
+    status = models.CharField(
+        choices=OrderStatus.choices, null=False, blank=False, verbose_name=_("Status")
+    )
+    notes = models.CharField(
+        max_length=255, null=True, blank=True, verbose_name=_("Notes")
+    )
+    ordered_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Ordered at"))
+    purchased_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Purchased at")
+    )
 
     def __str__(self):
-        return f"Order<id={self.id}, price={self.total_price}>"
+        return f"Order<id={self.id}, total_amount={self.total_amount}>"
 
     class Meta:
         verbose_name = _("Order")
@@ -44,6 +53,7 @@ class OrderItem(BaseModel):
         null=True,
         blank=True,
         related_name="items",
+        verbose_name=_("Order"),
     )
     product = models.ForeignKey(
         "products.ProductVariant",
@@ -51,9 +61,10 @@ class OrderItem(BaseModel):
         null=True,
         blank=True,
         related_name="order_items",
+        verbose_name=_("Product"),
     )
-    quantity = models.IntegerField(null=False, blank=False)
-    price = models.BigIntegerField(null=False, blank=False)
+    quantity = models.IntegerField(null=False, blank=False, verbose_name=_("Quantity"))
+    price = models.BigIntegerField(null=False, blank=False, verbose_name=_("Price"))
 
     def __str__(self):
         return f"OrderItem<product_id={self.product_id}>"
@@ -107,11 +118,13 @@ class Provider(models.Model):
 
 
 class Discount(BaseModel):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    discount_type = models.CharField(choices=DiscountTypeChoices.choices)
-    value = models.PositiveIntegerField()
-    is_active = models.BooleanField(default=True)
+    name = models.CharField(max_length=255, verbose_name=_("Name"))
+    description = models.TextField(verbose_name=_("Description"))
+    discount_type = models.CharField(
+        choices=DiscountTypeChoices.choices, verbose_name=_("Discount Type")
+    )
+    value = models.PositiveIntegerField(verbose_name=_("Value"))
+    is_active = models.BooleanField(default=True, verbose_name=_("Is Active"))
 
     def __str__(self):
         return self.name
@@ -128,6 +141,7 @@ class ProductDiscount(BaseModel):
         null=True,
         blank=True,
         related_name="discounts",
+        verbose_name=_("Product"),
     )
     discount = models.ForeignKey(
         "payments.Discount",
@@ -135,9 +149,14 @@ class ProductDiscount(BaseModel):
         null=True,
         blank=True,
         related_name="product_discounts",
+        verbose_name=_("Discount"),
     )
-    valid_from = models.DateTimeField(null=True, blank=True)
-    valid_until = models.DateTimeField(null=True, blank=True)
+    valid_from = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Valid From")
+    )
+    valid_until = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Valid Until")
+    )
 
     def __str__(self):
         return f"ProductDiscount<product_id={self.product_id}, discount_id={self.discount_id}>"
@@ -148,17 +167,27 @@ class ProductDiscount(BaseModel):
 
 
 class Promocode(BaseModel):
-    code = models.CharField(max_length=10, unique=True)
-    description = models.TextField()
-    type = models.CharField(choices=DiscountTypeChoices.choices)
-    value = models.PositiveIntegerField()
+    code = models.CharField(max_length=10, unique=True, verbose_name=_("Code"))
+    description = models.TextField(verbose_name=_("Description"))
+    type = models.CharField(choices=DiscountTypeChoices.choices, verbose_name=_("Type"))
+    value = models.PositiveIntegerField(verbose_name=_("Value"))
     min_amount = models.DecimalField(
-        max_digits=12, decimal_places=2, null=True, blank=True
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name=_("Min Amount"),
     )
-    usage_limit = models.PositiveIntegerField(null=True, blank=True)
-    valid_from = models.DateTimeField(null=True, blank=True)
-    valid_until = models.DateTimeField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
+    usage_limit = models.PositiveIntegerField(
+        null=True, blank=True, verbose_name=_("Usage Limit")
+    )
+    valid_from = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Valid From")
+    )
+    valid_until = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Valid Until")
+    )
+    is_active = models.BooleanField(default=True, verbose_name=_("Is Active"))
 
     def __str__(self):
         return self.code
@@ -170,9 +199,12 @@ class Promocode(BaseModel):
 
 class PromocodeUsage(models.Model):
     promocode_id = models.ForeignKey(
-        "payments.Promocode", on_delete=models.RESTRICT, related_name="usages"
+        "payments.Promocode",
+        on_delete=models.RESTRICT,
+        related_name="usages",
+        verbose_name=_("Promocode"),
     )
-    used_at = models.DateTimeField(auto_now_add=True)
+    used_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Used At"))
 
     def __str__(self):
         return f"PromocodeUsage<promocode_id={self.promocode_id}>"

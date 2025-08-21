@@ -41,7 +41,6 @@ urlpatterns = [
         ProfessionCreateAPIView.as_view(),
         name="profession-create",
     ),
-    # Templates
     path("template/register/", RegisterUserView.as_view(), name="register-template"),
     path("template/login/", LoginUserView.as_view(), name="login-template"),
     path("template/logout/", LogoutUserView.as_view(), name="logout-template"),

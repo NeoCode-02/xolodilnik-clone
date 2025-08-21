@@ -61,5 +61,5 @@ JAZZMIN_SETTINGS = {
         "auth.user": "collapsible",
         "auth.group": "vertical_tabs",
     },
-    # "language_chooser": True,
+    "language_chooser": True,
 }

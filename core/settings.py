@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
 from core.jazzmin_conf import JAZZMIN_SETTINGS  # noqa
@@ -20,7 +21,18 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ["*"]
+# Get allowed hosts from environment variable, default to localhost if not set
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+
+# Add development hosts if in DEBUG mode
+if DEBUG:
+    ALLOWED_HOSTS.extend(
+        [
+            "localhost",
+            "127.0.0.1",
+            "0.0.0.0",
+        ]
+    )
 
 
 # Application definition
@@ -35,12 +47,13 @@ DJANGO_APPS = [
 ]
 
 EXTERNAL_APPS = [
-    "daphne",
     "jazzmin",
     "rest_framework",
     "rest_framework_simplejwt",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    "rosetta",
+    "modeltranslation",
 ]
 
 LOCAL_APPS = ["users", "common", "products", "blog", "payments"]
@@ -50,6 +63,7 @@ INSTALLED_APPS = EXTERNAL_APPS + LOCAL_APPS + DJANGO_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -120,8 +134,17 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 
 USE_I18N = True
+USE_L10N = True
 
 USE_TZ = True
+
+LANGUAGES = [
+    ("en", _("English")),
+    ("ru", _("Russian")),
+    ("uz", _("Uzbek")),
+]
+
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 
 # Static files (CSS, JavaScript, Images)

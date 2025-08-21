@@ -11,8 +11,8 @@ class BaseModel(models.Model):
 
 
 class Sponsor(BaseModel):
-    name = models.CharField(max_length=255)
-    logo = models.ImageField(upload_to="sponsors")
+    name = models.CharField(max_length=255, verbose_name=_("Name"))
+    logo = models.ImageField(upload_to="sponsors", verbose_name=_("Logo"))
 
     def __str__(self):
         return self.name

@@ -1,10 +1,11 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 
 from blog.models import BlogCategory, BlogPost, Comment, Tag
 
 
 @admin.register(BlogPost)
-class BlogPostAdmin(admin.ModelAdmin):
+class BlogPostAdmin(TranslationAdmin):
     list_display = ("id", "title", "status", "published_at")
     list_display_links = ("id", "title")
     list_filter = ("status", "published_at")
@@ -14,7 +15,7 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 
 @admin.register(BlogCategory)
-class BlogCategoryAdmin(admin.ModelAdmin):
+class BlogCategoryAdmin(TranslationAdmin):
     list_display = ("id", "name", "is_active")
     list_display_links = ("id", "name")
     list_filter = ("is_active",)
@@ -22,7 +23,7 @@ class BlogCategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(TranslationAdmin):
     list_display = (
         "id",
         "name",
@@ -32,7 +33,7 @@ class TagAdmin(admin.ModelAdmin):
 
 
 @admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(TranslationAdmin):
     list_display = ("id", "user", "post", "is_active")
     list_display_links = ("id", "user", "post")
     list_filter = ("is_active",)
