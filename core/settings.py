@@ -21,19 +21,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-# Get allowed hosts from environment variable, default to localhost if not set
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
-
-# Add development hosts if in DEBUG mode
-if DEBUG:
-    ALLOWED_HOSTS.extend(
-        [
-            "localhost",
-            "127.0.0.1",
-            "0.0.0.0",
-        ]
-    )
-
 
 # Application definition
 
@@ -54,6 +41,7 @@ EXTERNAL_APPS = [
     "drf_spectacular_sidecar",
     "rosetta",
     "modeltranslation",
+    "django_filters",
 ]
 
 LOCAL_APPS = ["users", "common", "products", "blog", "payments"]

@@ -18,8 +18,6 @@ class Product(BaseModel):
         verbose_name=_("Category"),
     )
     is_featured = models.BooleanField(default=False, verbose_name=_("Is Featured"))
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name

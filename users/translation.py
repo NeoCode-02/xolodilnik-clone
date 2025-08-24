@@ -12,7 +12,3 @@ class ProfessionTranslationOptions(TranslationOptions):
 class UserFeedbackTranslationOptions(TranslationOptions):
     fields = ("message",)
 
-
-@register(User)
-class UserTranslationOptions(TranslationOptions):
-    fields = ("first_name", "last_name")

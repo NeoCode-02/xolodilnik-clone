@@ -15,7 +15,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path("", include("common.urls")),
     path("api/", include("products.urls")),
-    path("users/", include("users")),
+    path("users/", include("users.urls")),
     path("admin/", admin.site.urls),
     path("i18n/", include("django.conf.urls.i18n")),
     # JWT Auth
@@ -25,11 +25,11 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     # Optional UI:
     path(
-        "api/swagger/",
+        "swagger/",
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
-    path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("blog/", include("blog.urls")),
     path("common/", include("common.urls")),
     path("products/", include("products.urls")),

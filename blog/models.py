@@ -21,7 +21,7 @@ class BlogPost(BaseModel):
         default=BlogPostStatus.DRAFT,
         verbose_name=_("Status"),
     )
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False, verbose_name=_("Is Featured"))
     published_at = models.DateTimeField(
         blank=True, null=True, verbose_name=_("Published At")
     )
@@ -54,7 +54,7 @@ class BlogPost(BaseModel):
 
 class BlogCategory(BaseModel):
     name = models.CharField(max_length=100, unique=True, verbose_name=_("Name"))
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, verbose_name=_("Is Active"))
 
     class Meta:
         verbose_name = _("Blog Category")
@@ -83,10 +83,10 @@ class Comment(BaseModel):
         verbose_name=_("Post"),
     )
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="comments", verbose_name=_("User")
+        User, on_delete=models.CASCADE, related_name="comments"
     )
     text = models.TextField(verbose_name=_("Text"))
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, verbose_name=_("Is Active"))
 
     def __str__(self):
         return f"Comment by {self.user} on {self.post}"
